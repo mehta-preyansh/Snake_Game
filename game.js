@@ -28,6 +28,10 @@ let foodY=0;
 
 //Placing snake head in grid initially.
 function placeSnake(){
+  for(let i=0; i<snakeBody.length; i++){
+    snakeBody[i][0].remove();
+  }
+  snakeBody = [];
   snakeX=Math.floor(Math.random()*boardSize)+1;
   snakeY=Math.floor(Math.random()*boardSize)+1;
   snake.style.gridRowStart=snakeY;
@@ -88,8 +92,16 @@ function moveSnake(){
 
   snake.style.gridRowStart=snakeY;
   snake.style.gridColumnStart=snakeX;
-
-
+  for(let i=0; i<snakeBody.length; i++){
+    if(snakeY==snakeBody[i][0].style.gridRowStart && snakeX==snakeBody[i][0].style.gridColumnStart){
+      alert("Game over");
+      reset();
+    }
+  }
+  if(snakeX>boardSize || snakeX<1 || snakeY >boardSize || snakeY <1){
+    alert("Game over")
+    reset();
+  }
 }
 
 //Grow body function
@@ -101,6 +113,15 @@ function grow(){
   board.appendChild(newSegment);
   snakeBody.push([newSegment, {x: foodX, y: foodY}]);
   console.log(snakeBody)
+}
+
+//reset game
+function reset(){
+  speed = 10;
+  xVelocity = 0;
+  yVelocity = 0;
+  placeFood();
+  placeSnake();
 }
 
 //Opening screen.
@@ -121,7 +142,6 @@ function main(ctime){
     placeFood();
   }
   moveSnake();
-  // moveSnakeBody();
   window.addEventListener("keyup", changeDirection);
 }
 window.requestAnimationFrame(main)
