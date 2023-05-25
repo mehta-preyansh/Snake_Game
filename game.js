@@ -5,9 +5,6 @@ let boardSize = 22;
 //snake head motion
 let pause = false;
 
-//Game reset button
-
-
 //score element
 let score = document.getElementById("score");
 
@@ -102,6 +99,7 @@ function changeDirection(e){
 }
 
 function moveSnake(){
+  window.addEventListener("keyup", changeDirection); 
   if(!pause){
     for(let i=snakeBody.length-1; i>0; i--){
       snakeBody[i].style.gridRowStart=snakeBody[i-1].style.gridRowStart;
@@ -152,6 +150,8 @@ function grow(){
 
 //reset game
 function reset(){
+  let prompt = document.getElementById("restart");
+  prompt.innerHTML=`Press spacebar to resume.`
   segments = document.getElementsByClassName("snake_body");
   if(counter==1 && segments.length){
     console.log(counter)
@@ -163,18 +163,20 @@ function reset(){
   speed = 10;
   xVelocity = 0;
   yVelocity = 0;
-  let btn=document.getElementsByTagName("button")[0];
-  btn.addEventListener("click", ()=>{
-    placeSnake();
+  window.addEventListener("keypress", ()=>{
+    prompt.innerHTML='';
     placeFood();
+    placeSnake();
+    pause=false;
+    counter=1;
   })
-  score.innerHTML=`Score: ${count} --- High score: ${high}`
+  score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
 
 //Opening screen.
 window.onload= function(){
-  placeSnake();
   placeFood();
+  placeSnake();
   high=0;
   score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
@@ -187,10 +189,9 @@ function main(ctime){
   }
   lastTime=ctime;
   if(snakeX==foodX && snakeY==foodY){
-    grow();
     placeFood();
+    grow();
   }
-  moveSnake();
-  window.addEventListener("keyup", changeDirection);
+  moveSnake(); 
 }
-window.requestAnimationFrame(main)
+let animation = window.requestAnimationFrame(main)

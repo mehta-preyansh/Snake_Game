@@ -22,21 +22,36 @@
   display: grid;
   width: 80vmin;
   height: 80vmin;
-  background-color: rgba(0, 0, 0, 0.559);
+  background-color: rgba(0, 0, 0, 0.841);
   grid-template-columns: repeat(22, 1fr);
   grid-template-rows: repeat(22, 1fr);
 }
 
 .snake_head{
-  background-color: rgb(168, 152, 11);
+  /* background-color: rgb(168, 152, 11); */
+  background-image: url(/image_processing20210706-12803-8oe69p.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
 }
 
 .snake_body{
-  background-color: red;
+  /* background-color: red; */
+  background-image: url(/73f11139976542af14ff45cce845bd4d--background-designs-snake-skin.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 6px;
 }
 
 .food{
-  background-color: blue;
+  /* border-radius: ; */
+  /* background-color: blue; */
+  background-position: center;
+  background-image: url(/pngwing.com.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 .score_container{
   display: flex;
@@ -51,16 +66,8 @@
   border-radius: 5vmin;
 }
 
-.restart{
+#restart{
   margin: 2vmin 2vmin;
-}
-
-.btn{
-  border-radius: 2vmin;
-  background-color: rgba(208, 13, 13, 0.842);
-  border: none;
-  padding: 20px;
-  cursor: pointer;
-  font-size: 3vw;
-  color: rgb(33, 30, 30);
+  min-width: 10vmin;
+  min-height: 5vmin;
 }
