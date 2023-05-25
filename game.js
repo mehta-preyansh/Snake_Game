@@ -117,11 +117,11 @@ function moveSnake(){
     snake.style.gridRowStart=snakeY;
     snake.style.gridColumnStart=snakeX;
   }
-  
   for(let i=0; i<snakeBody.length; i++){
     if(snakeY==snakeBody[i].style.gridRowStart && snakeX==snakeBody[i].style.gridColumnStart){
       pause=true;
       reset();
+      break;
     }
   }
   if(snakeX>boardSize || snakeX<1 || snakeY >boardSize || snakeY <1){
@@ -129,6 +129,8 @@ function moveSnake(){
     reset();
   }
 }
+let segments=[];
+let counter=1;
 
 //Grow body function
 function grow(){
@@ -138,23 +140,35 @@ function grow(){
   newSegment.style.gridColumnStart=foodX;
   board.appendChild(newSegment);
   snakeBody.push(newSegment);
-  
+  if((snakeBody.length)%5 == 0){
+    speed+=5;
+  }
   count++;
   if(count>high){
     high++;
   }
-  score.innerHTML=`Score: ${count} High score: ${high}`;
+  score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
 
 //reset game
 function reset(){
+  segments = document.getElementsByClassName("snake_body");
+  if(counter==1 && segments.length){
+    console.log(counter)
+    segments[0].classList.add("snake_head");
+    segments[0].classList.remove("snake_body");
+    counter=2;
+  }
   count=0;
   speed = 10;
   xVelocity = 0;
   yVelocity = 0;
-  // placeSnake();
-  // placeFood();
-  score.innerHTML=`Score: ${count} High score: ${high}`
+  let btn=document.getElementsByTagName("button")[0];
+  btn.addEventListener("click", ()=>{
+    placeSnake();
+    placeFood();
+  })
+  score.innerHTML=`Score: ${count} --- High score: ${high}`
 }
 
 //Opening screen.
@@ -162,7 +176,7 @@ window.onload= function(){
   placeSnake();
   placeFood();
   high=0;
-  score.innerHTML=`Score: ${count} High score: ${high}`;
+  score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
 
 //Game Loop 
