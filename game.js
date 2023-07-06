@@ -18,7 +18,7 @@ board.appendChild(food);
 let snakeBody = [];
 
 //speed of rendering
-let speed = 10;
+let speed = 6;
 let lastTime=0;
 
 //snake initial velocity direction;
@@ -52,8 +52,8 @@ function placeSnake(){
 
 //Placing food randomly in the grid.
 function placeFood(){
-  foodX = Math.floor(Math.random()*boardSize)+1;
-  foodY = Math.floor(Math.random()*boardSize)+1;
+  foodX = Math.floor(Math.random()*(boardSize-2)+2);
+  foodY = Math.floor(Math.random()*(boardSize-2)+2);
   let flag = false;
   for(let i=0; i<snakeBody.length; i++){
     if(snakeBody[i].style.gridRowStart==foodY && snakeBody[i].style.gridColumnStart==foodX){
@@ -139,7 +139,7 @@ function grow(){
   board.appendChild(newSegment);
   snakeBody.push(newSegment);
   if((snakeBody.length)%5 == 0){
-    speed+=5;
+    speed+=2;
   }
   count++;
   if(count>high){
