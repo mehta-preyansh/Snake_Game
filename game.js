@@ -1,3 +1,7 @@
+const move = new Audio("./music/move.mp3")
+const music = new Audio("./music/music.mp3")
+const chew = new Audio("./music/food.mp3")
+const died = new Audio("./music/gameover.mp3")
 //canvas size and dom node
 const board = document.getElementById("board");
 let boardSize = 22;
@@ -69,38 +73,43 @@ function placeFood(){
 }
 
 //Changing snake direction
-function changeDirection(e){  
+function changeDirection(e){
   switch(e.code){
     case "ArrowUp" : 
-      if(yVelocity!=1){
+    if(yVelocity!=1 && yVelocity!=-1){
         xVelocity=0;
         yVelocity=-1;
+        move.play();  
       }
       break;
-    case "ArrowDown" : 
-      if(yVelocity!=-1){
+      case "ArrowDown" : 
+      if(yVelocity!=-1 && yVelocity!=1){
         xVelocity=0;
         yVelocity=1;
+        move.play();  
       }
       break;
       case "ArrowLeft":
-        if(xVelocity!=1){
+        if(xVelocity!=1 && xVelocity!=-1){
           xVelocity=-1;
           yVelocity=0;
+          move.play();  
         }
         break;
         case "ArrowRight":
-          if(xVelocity!=-1){
-        xVelocity=1;
-        yVelocity=0;
-      } 
+        if(xVelocity!=-1 && xVelocity!=1){
+          xVelocity=1;
+          yVelocity=0;
+          move.play();
+        } 
       break;
     }
 }
 
 function moveSnake(){
-  window.addEventListener("keyup", changeDirection); 
+  window.addEventListener("keydown", changeDirection); 
   if(!pause){
+    resetFlag=true
     for(let i=snakeBody.length-1; i>0; i--){
       snakeBody[i].style.gridRowStart=snakeBody[i-1].style.gridRowStart;
       snakeBody[i].style.gridColumnStart=snakeBody[i-1].style.gridColumnStart;
@@ -147,23 +156,29 @@ function grow(){
   }
   score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
-
+let resetFlag=true;
 //reset game
 function reset(){
+  if(resetFlag){
+    music.pause();
+    died.play();
+    resetFlag=false;
+  }
+
   let prompt = document.getElementById("restart");
-  prompt.innerHTML=`Press spacebar to resume.`
+  prompt.innerHTML=`Press any key to resume.`
   segments = document.getElementsByClassName("snake_body");
   if(counter==1 && segments.length){
-    console.log(counter)
     segments[0].classList.add("snake_head");
     segments[0].classList.remove("snake_body");
     counter=2;
   }
   count=0;
-  speed = 10;
+  speed = 6;
   xVelocity = 0;
   yVelocity = 0;
   window.addEventListener("keypress", ()=>{
+    music.play()
     prompt.innerHTML='';
     placeFood();
     placeSnake();
@@ -177,6 +192,7 @@ function reset(){
 window.onload= function(){
   placeFood();
   placeSnake();
+  music.play()
   high=0;
   score.innerHTML=`Score: ${count} --- High score: ${high}`;
 }
@@ -184,6 +200,9 @@ window.onload= function(){
 //Game Loop 
 function main(ctime){
   window.requestAnimationFrame(main);
+  if(snakeX==foodX && snakeY==foodY){
+    chew.play();
+  }
   if((ctime-lastTime)/1000 < 1/speed){
     return;
   }
